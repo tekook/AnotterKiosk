@@ -81,6 +81,15 @@ else
     CHROME_GPU_FLAGS="--disable-gpu"
 fi
 
+# enable/disable acceleration of video decoding
+ACCEL_DECODE=$(get-ini /boot/firmware/kioskbrowser.ini browser accel_decode)
+if [ "${ACCEL_DECODE}" -eq 1 ]
+then
+    CHROME_ACCEL_DECODE_FLAGS=""
+else
+    CHROME_ACCEL_DECODE_FLAGS="--disable-accelerated-video-decode"
+fi
+
 # enable/disable low_end_device_mode
 LOW_END=$(get-ini /boot/firmware/kioskbrowser.ini browser low_end_device_mode)
 if [ "${LOW_END}" -eq 1 ]
@@ -122,6 +131,7 @@ chromium --start-fullscreen \
 		 --no-memcheck \
 		 ${CHROME_DARK_MODE_FLAGS} \
 		 ${CHROME_GPU_FLAGS} \
+		 ${CHROME_ACCEL_DECODE_FLAGS} \
 		 ${CHROME_LOW_END_FLAGS} \
 		 ${CHROME_CACHE_FLAGS} \
 		 ${URL} &
